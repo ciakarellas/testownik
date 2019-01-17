@@ -3,10 +3,13 @@
 
     <div>
         <ul >
-            <li class="container" v-for="test in testCaseList" :key="test.id">
-                <div>{{test.id}}</div>
-                <textarea @keyup.enter='addTestCase()' v-model="test.content"></textarea>
-                <div>edit</div>
+            <li class="container" v-for="(test, index) in testCaseList" :key="index">
+                <div @click="startEditTestCase(test.id)">
+                    <div>{{test.id}}</div>
+                    <div>{{test.content}}</div>
+                    <textarea  @keyup.enter='addTestCase()' v-model="test.content"></textarea>
+                    <div>edit</div>
+                </div>
             </li>
         </ul>
     </div>
@@ -19,16 +22,22 @@ export default {
         testCaseInput: null,
         testCaseList: [
         {
-          id: '0001',
-          content: "Pierwszy test to jest to",
+            id: '1',
+            caseStep: '0001',
+            content: "Pierwszy test to jest to",
+            edit: false
         },
         {
-          id: '0002',
-          content: "Drugi test to jest to",
+            id: 2,
+            caseStep: '0002',
+            content: "Drugi test to jest to",
+            edit: false
         }
       ]
     }),
     methods:{
+        sayHello: function(){
+            console.log('hello')},
         addTestCase: function(){
             this.testCaseList.push(
                 {
@@ -36,6 +45,9 @@ export default {
                     content: '',
                 }
             )
+        },
+        startEditTestCase: function(test){
+            console.log(test);
         }
     },
 }

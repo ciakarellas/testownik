@@ -22,7 +22,7 @@ export default {
         testCaseInput: null,
         testCaseList: [
         {
-            id: '1',
+            id: 1,
             caseStep: '0001',
             content: "Pierwszy test to jest to",
             edit: false
@@ -47,7 +47,7 @@ export default {
             )
         },
         startEditTestCase: function(test){
-            console.log(test);
+            console.log(this.testCaseList.find(x => x.id === test ).content)
         }
     },
 }

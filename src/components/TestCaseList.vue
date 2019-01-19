@@ -6,8 +6,8 @@
             <li class="container" v-for="(test, index) in testCaseList" :key="index">
                 <div @click="startEditTestCase(test.id)">
                     <div>{{test.id}}</div>
-                    <div>{{test.content}}</div>
-                    <textarea  @keyup.enter='addTestCase()' v-model="test.content"></textarea>
+                    <div v-if=!test.edit>{{test.content}}</div>
+                    <textarea v-else @keyup.enter='addTestCase()' v-model="test.content"></textarea>
                     <div>edit</div>
                 </div>
             </li>
@@ -47,7 +47,9 @@ export default {
             )
         },
         startEditTestCase: function(test){
-            console.log(this.testCaseList.find(x => x.id === test ).content)
+            let testIndex = this.testCaseList.findIndex(x => x.id === test );
+            this.testCaseList[testIndex].edit = true;
+            console.log(this.testCaseList[testIndex].edit)
         }
     },
 }

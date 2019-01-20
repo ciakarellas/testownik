@@ -4,11 +4,11 @@ import { nextTick } from 'async';
 
     <div>
         <ul >
-            <li  v-for="(test, index) in testCaseList" :key="index">
-                <div class="container" @click="startEditTestCase(test.id)">
+            <li v-for="(test, index) in testCaseList" :key="index">
+                <div ref="caseTag" class="container" @click="startEditTestCase(test.id)">
                     <div>{{test.caseStep}}</div>
                     <div v-if=!test.edit>{{test.content}}</div>
-                    <textarea v-else @keyup.enter='addTestCase()' v-model="test.content"></textarea>
+                    <textarea ref="text" v-focus v-else @keyup.enter='addTestCase()' v-model="test.content" autofocus></textarea>
                     <div>edit</div>
                 </div>
             </li>
@@ -37,8 +37,6 @@ export default {
       ]
     }),
     methods:{
-        sayHello: function(){
-            console.log('hello')},
         addTestCase: function(){
             this.resetEdit()
             this.testCaseList.push(
@@ -65,6 +63,14 @@ export default {
             this.testCaseList.forEach(x => x.edit = false)
         }
     },
+    directives: {
+        focus: {
+            // directive definition
+            inserted: function (el) {
+            el.focus()
+            }
+        }
+    }
 }
 </script>
 

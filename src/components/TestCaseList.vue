@@ -1,11 +1,12 @@
 
+import { nextTick } from 'async';
 <template>
 
     <div>
         <ul >
-            <li class="container" v-for="(test, index) in testCaseList" :key="index">
-                <div @click="startEditTestCase(test.id)">
-                    <div>{{test.id}}</div>
+            <li  v-for="(test, index) in testCaseList" :key="index">
+                <div class="container" @click="startEditTestCase(test.id)">
+                    <div>{{test.caseStep}}</div>
                     <div v-if=!test.edit>{{test.content}}</div>
                     <textarea v-else @keyup.enter='addTestCase()' v-model="test.content"></textarea>
                     <div>edit</div>
@@ -18,7 +19,7 @@
 
 <script>
 export default {
-    data: () => ({
+    data: () => ({  
         testCaseInput: null,
         testCaseList: [
         {
@@ -39,17 +40,29 @@ export default {
         sayHello: function(){
             console.log('hello')},
         addTestCase: function(){
+            this.resetEdit()
             this.testCaseList.push(
                 {
-                    id: '0003',
+                    id: this.testCaseList.length + 1,
+                    caseStep: this.setTestCaseNumber(),
                     content: '',
+                    edit: true
                 }
-            )
+            );
         },
         startEditTestCase: function(test){
             let testIndex = this.testCaseList.findIndex(x => x.id === test );
+            this.resetEdit()
             this.testCaseList[testIndex].edit = true;
-            console.log(this.testCaseList[testIndex].edit)
+        },
+        setTestCaseNumber: function(){
+            let num = '0000';
+            let numCaseTest = '' + (this.testCaseList.length + 1)
+            let idNumber = num.substring(   numCaseTest.length) + (this.testCaseList.length + 1);
+            return idNumber;
+        },
+        resetEdit: function(){
+            this.testCaseList.forEach(x => x.edit = false)
         }
     },
 }
@@ -61,6 +74,7 @@ export default {
     display:grid;
     grid-template-columns: 40px auto 40px;
     padding: 0 10px;
+    width:80%;
 }
 
 </style>

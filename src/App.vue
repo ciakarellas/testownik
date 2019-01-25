@@ -8,18 +8,18 @@
     </v-toolbar>
 
     <v-content>
-      <HelloWorld/>
+      <TestCaseList />
     </v-content>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import TestCaseList from './components/TestCaseList'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    TestCaseList
   },
   data () {
     return {

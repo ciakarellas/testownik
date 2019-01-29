@@ -25,16 +25,6 @@
 
         </div>
     </div>
-   <!-- <ul >
-        <li v-for="(test, index) in testCaseList" :key="index">
-            <div v-bind:class = "[test.parent]" ref="caseTag" class="container" @click="startEditTestCase(test.id)">
-                <div>{{test.caseStep}}</div>
-                <div v-if=!test.edit>{{test.content}}</div>
-                <textarea ref="text" v-focus v-else @keyup.enter='addTestCase()' v-model="test.content" autofocus></textarea>
-                <div>edit</div>
-            </div>
-        </li>
-    </ul>-->
     
 </template>
 
@@ -85,7 +75,7 @@ export default {
         setTestCaseNumber: function(){
             let num = '0000';
             let numCaseTest = '' + (this.selectedCaseId)
-            let idNumber = num.substring(   numCaseTest.length) + (this.selectedCaseId + 1);
+            let idNumber = num.substring(numCaseTest.length) + (this.selectedCaseId + 1);
             return idNumber;
         },
         resetEdit: function(){

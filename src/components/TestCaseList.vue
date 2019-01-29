@@ -4,12 +4,25 @@
         <div v-bind:class = "[test.parent]" 
         ref="caseTag" 
         class="container" 
-        @click="startEditTestCase(test.id)"
+        @click="startEditTestCase(test)"
         v-for="(test, index) in testCaseList" :key="index">
+
             <div>{{test.caseStep}}</div>
+
             <div v-if=!test.edit>{{test.content}}</div>
-            <textarea ref="text" v-focus v-else @keyup.enter='addTestCase()' v-model="test.content" autofocus></textarea>
+
+            <textarea 
+            v-bind:id="'case_id_'+test.id" 
+            ref="text" 
+            v-focus 
+            v-else 
+            @keyup.enter='addTestCase()' 
+            v-model="test.content" 
+            autofocus
+            ></textarea>
+
             <div>edit</div>
+
         </div>
     </div>
    <!-- <ul >
@@ -28,6 +41,7 @@
 <script>
 export default {
     data: () => ({  
+        selectedCaseId: null,
         testCaseInput: null,
         testCaseList: [
         {
@@ -51,9 +65,9 @@ export default {
     methods:{
         addTestCase: function(){
             this.resetEdit()
-            this.testCaseList.push(
+            this.testCaseList.splice(this.selectedCaseId, 0,
                 {
-                    id: this.testCaseList.length + 1,
+                    id: this.setTestCaseNumber,
                     caseStep: this.setTestCaseNumber(),
                     content: '',
                     edit: true,
@@ -63,14 +77,15 @@ export default {
             );
         },
         startEditTestCase: function(test){
-            let testIndex = this.testCaseList.findIndex(x => x.id === test );
+            let testIndex = this.testCaseList.findIndex(x => x.id === test.id);
             this.resetEdit()
             this.testCaseList[testIndex].edit = true;
+            this.selectedCaseId = testIndex + 1;
         },
         setTestCaseNumber: function(){
             let num = '0000';
-            let numCaseTest = '' + (this.testCaseList.length + 1)
-            let idNumber = num.substring(   numCaseTest.length) + (this.testCaseList.length + 1);
+            let numCaseTest = '' + (this.selectedCaseId)
+            let idNumber = num.substring(   numCaseTest.length) + (this.selectedCaseId + 1);
             return idNumber;
         },
         resetEdit: function(){

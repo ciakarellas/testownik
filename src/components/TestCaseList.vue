@@ -1,4 +1,5 @@
 
+import { threadId } from 'worker_threads';
 <template>      
     <div>
         <div v-bind:class = "[test.parent]" 
@@ -20,9 +21,6 @@
             v-model="test.content" 
             autofocus
             ></textarea>
-
-            <div>edit</div>
-
         </div>
     </div>
     
@@ -31,55 +29,60 @@
 <script>
 export default {
     data: () => ({  
+        count:3,
         selectedCaseId: null,
         testCaseInput: null,
         testCaseList: [
         {
             id: 1,
             caseStep: '0001',
-            content: "Pierwszy test to jest to",
+            content: "",
             edit: false,
             parent: 'active',
             child: null
         },
-        {
-            id: 2,
-            caseStep: '0002',
-            content: "Drugi test to jest to",
-            edit: false,
-            parent: null,
-            child: null
-        }
       ]
     }),
     methods:{
         addTestCase: function(){
             this.resetEdit()
-            this.testCaseList.splice(this.selectedCaseId, 0,
-                {
-                    id: this.setTestCaseNumber,
-                    caseStep: this.setTestCaseNumber(),
+            const newIdNumber = this.selectedCaseId + 1
+            const newTestCase =  {
+                    id: newIdNumber,
+                    caseStep: this.setTestCaseNumber(newIdNumber),
                     content: '',
                     edit: true,
                     parent: null,
                     child: null
                 }
-            );
+            this.testCaseList.splice((this.selectedCaseId), 0, newTestCase);
+            this.startEditTestCase(newTestCase)
+            this.updateTestCaseNumber();
         },
         startEditTestCase: function(test){
             let testIndex = this.testCaseList.findIndex(x => x.id === test.id);
             this.resetEdit()
             this.testCaseList[testIndex].edit = true;
-            this.selectedCaseId = testIndex + 1;
+            this.selectedCaseId = testIndex+1;
         },
-        setTestCaseNumber: function(){
+        setTestCaseNumber: function(testId){
             let num = '0000';
-            let numCaseTest = '' + (this.selectedCaseId)
-            let idNumber = num.substring(numCaseTest.length) + (this.selectedCaseId + 1);
+            let numCaseTest = '' + testId
+            let idNumber = num.substring(numCaseTest.length) + testId;
             return idNumber;
         },
         resetEdit: function(){
             this.testCaseList.forEach(x => x.edit = false)
+        },
+        updateTestCaseNumber: function(){
+
+            const whereStartCutitng = this.selectedCaseId;
+            let updatedPartTestCaseList = this.testCaseList.slice(whereStartCutitng);
+            updatedPartTestCaseList.forEach(test => test.id += 1)
+            updatedPartTestCaseList.forEach(test => test.caseStep = this.setTestCaseNumber(test.id))
+            const numberOfUpdateObjects = updatedPartTestCaseList.length
+            this.testCaseList.slice(whereStartCutitng, numberOfUpdateObjects, updatedPartTestCaseList)
+        
         }
     },
     directives: {

@@ -17,7 +17,9 @@ import { threadId } from 'worker_threads';
             ref="text" 
             v-focus 
             v-else 
-            @keyup.enter='addTestCase()' 
+            @keyup.enter='addTestCase()'
+            @keydown.shift.tab.prevent='tabPress()'
+            @keydown.tab.prevent='onlyTab()'
             v-model="test.content" 
             autofocus
             ></textarea>
@@ -83,7 +85,11 @@ export default {
             const numberOfUpdateObjects = updatedPartTestCaseList.length
             this.testCaseList.slice(whereStartCutitng, numberOfUpdateObjects, updatedPartTestCaseList)
         
-        }
+        },
+        tabPress: function () {
+           //it's work now i have to addfunction for this action
+        },
+        onlyTab: () => alert('no no')
     },
     directives: {
         focus: {
@@ -106,5 +112,4 @@ export default {
 }
 
 </style>
-
 

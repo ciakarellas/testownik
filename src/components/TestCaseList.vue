@@ -8,18 +8,19 @@ import { threadId } from 'worker_threads';
         @click="startEditTestCase(test)"
         v-for="(test, index) in testCaseList" :key="index">
 
-            <div>{{test.caseStep}}</div>
+            <div >{{test.caseStep}}</div>
 
-            <div v-if=!test.edit>{{test.content}}</div>
+            <div v-bind:class="{parent: test.parent}" v-if=!test.edit>{{test.content}}</div>
 
             <textarea 
+            v-bind:class="{parent: test.parent}"
             v-bind:id="'case_id_'+test.id" 
             ref="text" 
             v-focus 
             v-else 
             @keyup.enter='addTestCase()'
-            @keydown.shift.tab.prevent='tabPress()'
-            @keydown.tab.prevent='onlyTab()'
+            @keydown.shift.tab.prevent.exact='tabPress()'
+            @keydown.tab.prevent.exact='onlyTab()'
             v-model="test.content" 
             autofocus
             ></textarea>
@@ -40,7 +41,7 @@ export default {
             caseStep: '0001',
             content: "",
             edit: false,
-            parent: 'active',
+            parent: false,
             child: null
         },
       ]
@@ -54,7 +55,7 @@ export default {
                     caseStep: this.setTestCaseNumber(newIdNumber),
                     content: '',
                     edit: true,
-                    parent: null,
+                    parent: false,
                     child: null
                 }
             this.testCaseList.splice((this.selectedCaseId), 0, newTestCase);
@@ -88,8 +89,13 @@ export default {
         },
         tabPress: function () {
            //it's work now i have to addfunction for this action
+           alert('yes')
         },
-        onlyTab: () => alert('no no')
+        onlyTab: function(){
+            let testIndex = this.selectedCaseId - 2
+            this.testCaseList[testIndex].parent = true
+            console.log(this.testCaseList[testIndex])
+        }
     },
     directives: {
         focus: {
@@ -109,6 +115,10 @@ export default {
     grid-template-columns: 40px auto 40px;
     padding: 0 10px;
     width:80%;
+    
+    .parent{
+        font-size: 30px;
+    }
 }
 
 </style>

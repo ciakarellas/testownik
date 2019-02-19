@@ -100,20 +100,22 @@ export default {
         
         },
         tabPress: function () {
-           //it's work now i have to addfunction for this action
-           alert('yes')
+           this.changePadinng("minus")
         },
         onlyTab: function(){
             this.addParentClass()
-            this.addPadinng()  
+            this.changePadinng("plus")  
         },
         addParentClass: function() {
             let testParent = this.selectedCaseId - 2
             this.testCaseList[testParent].parent = true
         },
-        addPadinng: function(){
+        changePadinng: function(plusOrMinus){
             let addPaddingToTestCase = this.selectedCaseId - 1
-            this.testCaseList[addPaddingToTestCase].padding +=18
+            if(plusOrMinus === "plus"){
+                this.testCaseList[addPaddingToTestCase].padding +=18
+            } else if (plusOrMinus === "minus")
+                this.testCaseList[addPaddingToTestCase].padding -=18
         }
     },
     directives: {

@@ -2,7 +2,9 @@
 import { threadId } from 'worker_threads';
 <template>      
     <div>
-        <div v-bind:class = "[test.parent]" 
+        <div 
+        
+        v-bind:class = "[test.parent]" 
         ref="caseTag" 
         class="container" 
         @click="startEditTestCase(test)"
@@ -10,10 +12,18 @@ import { threadId } from 'worker_threads';
 
             <div >{{test.caseStep}}</div>
 
-            <div v-bind:class="{parent: test.parent}" v-if=!test.edit>{{test.content}}</div>
+            <div 
+            v-bind:class="{parent: test.parent}"
+            v-bind:style = '{padding: test.padding + "px"}'
+            v-if=!test.edit>
+
+                {{test.content}}
+
+            </div>
 
             <textarea 
             v-bind:class="{parent: test.parent}"
+            v-bind:style = '{padding: test.padding + "px"}'
             v-bind:id="'case_id_'+test.id" 
             ref="text" 
             v-focus 
@@ -42,7 +52,8 @@ export default {
             content: "",
             edit: false,
             parent: false,
-            child: null
+            child: null,
+            padding: 0
         },
       ]
     }),
@@ -56,7 +67,8 @@ export default {
                     content: '',
                     edit: true,
                     parent: false,
-                    child: null
+                    child: null,
+                    padding: 0
                 }
             this.testCaseList.splice((this.selectedCaseId), 0, newTestCase);
             this.startEditTestCase(newTestCase)
@@ -92,9 +104,16 @@ export default {
            alert('yes')
         },
         onlyTab: function(){
-            let testIndex = this.selectedCaseId - 2
-            this.testCaseList[testIndex].parent = true
-            console.log(this.testCaseList[testIndex])
+            this.addParentClass()
+            this.addPadinng()  
+        },
+        addParentClass: function() {
+            let testParent = this.selectedCaseId - 2
+            this.testCaseList[testParent].parent = true
+        },
+        addPadinng: function(){
+            let addPaddingToTestCase = this.selectedCaseId - 1
+            this.testCaseList[addPaddingToTestCase].padding +=18
         }
     },
     directives: {
